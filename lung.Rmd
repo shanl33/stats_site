@@ -82,6 +82,7 @@ tidy_htest <- function(htest, group_name="Gamma_1") {
 ## Function for plotting confidence intervals on one plot
 # allCIs needs to be a dataframe with the variables: Year, Value, Group, Method
 plot_allCIs <- function(allCIs) {
+  allCIs$Value <- round(allCIs$Value, 1)
   ggplot(allCIs, aes(x=Year, y=Value, group=Group, colour=Method, legendgroup=Method)) +
   geom_point() +
   geom_line() +
