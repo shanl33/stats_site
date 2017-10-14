@@ -50,8 +50,12 @@ WHOweights18 <- c(WHOdf$Propn[1:17], sum(WHOdf$Propn[18:21]))
 
 # WHO and internal standards for Maori (With WHO and 2011 standard plotted)
 maoriStandards <- data.frame(Age = rep(maoriStd$Age, 2),
-                             Proportion = round(c(age_p(maoriStd$Population), 0.01*WHOweights18), 3),
+                             Proportion = c(age_p(maoriStd$Population), 0.01*WHOweights18),
                              Standard = rep(c("Maori2011", "WHO"), each=18))
+
+# Round proportions to 3dp
+MaoriAge$Proportion <- round(MaoriAge$Proportion, 3)
+maoriStandards$Proportion <- round(maoriStandards$Proportion, 3)
 
 MaoriAgePlot <- ggplot() +
   geom_point(data=MaoriAge, aes(x=Age, y=Proportion, colour=Year)) +
