@@ -65,5 +65,3 @@ MaoriAgePlot <- ggplot() +
 
 ggplotly(MaoriAgePlot, tooltip=c("x", "y", "group")) 
 ```
-
-

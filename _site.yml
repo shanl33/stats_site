@@ -5,3 +5,5 @@ navbar:
   left:
     - text: "Maori age distribution"
       href: index.html
+    - text: "Standardisation"
+      href: lung.html

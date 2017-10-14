@@ -1,0 +1,185 @@
+---
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
+library(ggplot2)
+library(plotly)
+library(asht)
+```
+
+## Lung cancer rates for NZ Maori
+### WHO standard (left) and Maori 2011 standard (right)
+
+```{r, fig.width=16, fig.height=8}
+# Load data
+load("data/WHOdf.RData")
+maoriCancer <- read.csv("data/MaoriLung.csv")
+maoriPopn <- read.csv("data/MaoriPopn.csv")
+
+# Tidy data
+colnames(maoriPopn) <- c("Age", 2009:2015)
+# Change to numeric
+maoriPopnCounts <- do.call(cbind.data.frame, 
+                           lapply(maoriPopn[-1], function(x) as.numeric(gsub(",", "", x))))
+
+# Transpose lung cancer data to be like CI cancer and mortality data
+maoriLung <- as.data.frame(t(maoriCancer[-1]))
+colnames(maoriLung) <- 2009:2015
+
+#### Common values used regardless of data set
+## For Weights calculations for wspoissonTest() 
+# Sum of the WHO standard weights (ie. sum(n.standard))
+# Slightly over 100
+WHO_sum <- sum(WHOdf$Propn)
+
+#### Functions for calculating, collating results and plotting 95% confidence intervals
+## Function for collating results from wspoissonTest() 
+# Extract the estimate and CI into a data frame for plotting
+# Default type="max" is Gamma 1
+estimateCI <- function(counts, W, type="max") {
+  results <- wspoissonTest(counts, W, wmtype=type)
+  keep <- data.frame(Value = c(results$estimate, results$conf.int[1], results$conf.int[2])*100000,
+                     Group = c("Estimate", "Low", "Up"))
+  return(keep)
+}
+
+## Function for finding CIs using Rothman/Greenland and Keyfitz methods 
+RGandK <- function(htest, counts) {
+  # Point estimates from wspoissonTest()
+  rate <- htest[htest$Group=="Estimate", "Value"]
+  # Number of observed incidences (for 2009 to 2015)
+  a <- colSums(counts, na.rm = TRUE)
+  n <- length(a)
+  year <- 2009:2015
+  # Rothman Greenland
+  Upp_RG <- exp(log(rate)+1.96*sqrt(1/a))
+  Low_RG <- exp(log(rate)-1.96*sqrt(1/a))
+  # Keyfitz, 1966 
+  # Assumes standard population is not subject to sampling error, even if directly standardised.
+  Upp_norm <- rate + 1.96*rate/sqrt(a)
+  Low_norm <- rate - 1.96*rate/sqrt(a)
+  CIs <- data.frame(Value=c(Low_RG, Upp_RG, Low_norm, Upp_norm), 
+                    Group=rep(c("LowRG", "UpRG", "LowKey", "UpKey"), each=n), 
+                    Method=rep(c("Rothman/Greenland", "Keyfitz"), each=2*n),
+                    Year=year)
+  estimate <- data.frame(Value=rate, Group="Estimate", 
+                         Method="Estimate", Year=year)
+  return(rbind(estimate, CIs))
+}
+
+## Function for tidying collated output from wspoissonTest() for plotting
+# Remove estimate, add year, group
+tidy_htest <- function(htest, group_name="Gamma_1") {
+  tidy <- htest[htest$Group!="Estimate", ]
+  tidy$Group <- paste(tidy$Group, group_name, sep="")
+  tidy$Method <- group_name
+  tidy$Year <- rep(2009:2015, each=2)
+  return(tidy)
+}
+
+## Function for plotting confidence intervals on one plot
+# allCIs needs to be a dataframe with the variables: Year, Value, Group, Method
+plot_allCIs <- function(allCIs) {
+  ggplot(allCIs, aes(x=Year, y=Value, group=Group, colour=Method, legendgroup=Method)) +
+  geom_point() +
+  geom_line() +
+  theme_classic() +
+  scale_x_discrete(limits=2009:2015) +
+  labs(y="Rate per 100 000", colour="")
+}
+
+# Function for finding population proportion for each age band
+age_p <- function(x) {
+  total <- sum(x)
+  propns <- x/total
+  return(propns)
+}
+
+##### WHO standardised
+# Weights (W) for wspoissonTest() when using age-standardisation
+# a). Population size for each of the 18 age-bands (n.x)
+# Combine last two age bands (85+) to match the 18 age-bands from the lung cancer data
+maori18 <- rbind(maoriPopnCounts[1:17, ], (maoriPopnCounts[18, ] + maoriPopnCounts[19, ]))
+
+# b). Weights for WHO standard
+WHOweights18 <- c(WHOdf$Propn[1:17], sum(WHOdf$Propn[18:21]))
+
+# c). Weights for wspoissonTest()
+W18 <- WHOweights18/(maori18*WHO_sum)
+
+#### 95% Confidence intervals ####
+# Gamma 1 confidence intervals
+lungG1 <- do.call(rbind.data.frame, 
+                     mapply(estimateCI, counts=maoriLung, W=W18, SIMPLIFY=FALSE))
+
+# Gamma 2 confidence intervals 
+lungG2 <- do.call(rbind.data.frame, 
+                     mapply(estimateCI, counts=maoriLung, W=W18, SIMPLIFY=FALSE, type="tcz"))
+
+# Rothman/Greenland and Keyfitz
+lungRGK <- RGandK(lungG1, maoriLung)
+
+# Collate data for plotting
+lung_allCIs <- rbind(lungRGK, tidy_htest(lungG1), tidy_htest(lungG2, "Gamma_2"))
+
+#### Maori 2011 popn standard
+# Load data on Maori population 2011 (use as standard)
+maoriStd <- read.csv("data/MaoriStandard2011.csv")
+# Tidy data: Change to numeric
+maoriStd$Population <- as.numeric(gsub(",", "", maoriStd$Population))
+maoriStd$Age <- factor(c("0-04", "05-09", as.character(maoriStd$Age[3:18])))
+# a). Population size for each of the 18 age-bands (n.x)
+# Use maori18 (same as beforem)
+
+# b). Weights for Maori 2011 standard
+Maori_sum <- sum(maoriStd$Population)
+
+# c). Weights for wspoissonTest()
+MaoriW18 <- maoriStd$Population/(maori18*Maori_sum)
+
+#### 95% Confidence intervals ####
+# Gamma 1 confidence intervals
+lungG1_intStd <- do.call(rbind.data.frame, 
+                     mapply(estimateCI, counts=maoriLung, W=MaoriW18, SIMPLIFY=FALSE))
+
+# Gamma 2 confidence intervals 
+lungG2_intStd <- do.call(rbind.data.frame, 
+                     mapply(estimateCI, counts=maoriLung, W=MaoriW18, SIMPLIFY=FALSE, type="tcz"))
+
+# Rothman/Greenland and Keyfitz
+lungRGK_intStd <- RGandK(lungG1_intStd, maoriLung)
+
+# Collate data for plotting
+lung_allintStd <- rbind(lungRGK_intStd, tidy_htest(lungG1_intStd), 
+                       tidy_htest(lungG2_intStd, "Gamma_2"))
+### Plots
+MaoriWHO_plot <- plot_allCIs(lung_allCIs) +
+  scale_y_continuous(limits=c(40, 100)) +
+  theme(legend.position="none")
+
+MaoriInt_plot <- plot_allCIs(lung_allintStd) +
+  scale_y_continuous(limits=c(40, 100)) +
+  ylab("")
+
+plotlyWHO <- ggplotly(MaoriWHO_plot, tooltip=c("x", "y", "colour")) %>% 
+  layout(showlegend=F)
+plotlyInt <- ggplotly(MaoriInt_plot, tooltip=c("x", "y", "colour")) 
+
+# Plot side by side
+subplot(plotlyWHO, plotlyInt, titleY=TRUE, titleX=TRUE)
+  #layout(title="WHO standard (left) and Maori 2011 standard (right)")
+```
+
+### WHO standardised rates lung cancer for NZ Maori
+```{r, fig.width=10, fig.height=8}
+# WHO standard alone
+ggplotly(plot_allCIs(lung_allCIs), tooltip=c("x", "y", "colour")) 
+```
+
+### Internally standardised rates lung cancer for NZ Maori
+```{r, fig.width=10, fig.height=8}
+# Internal standard standard alone
+ggplotly(plot_allCIs(lung_allintStd), tooltip=c("x", "y", "colour")) 
+```
