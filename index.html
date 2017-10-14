@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<script src="site_libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.7.0/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.0.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotlyjs-1.27.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotlyjs-1.27.1/plotly-latest.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Stats780</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Maori age distribution</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<div id="age-distribution-of-maori-population-2009-2015" class="section level2">
+<h2>Age distribution of Maori Population (2009-2015)</h2>
+<div id="ec2c2dec38d2" style="width:1008px;height:576px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="ec2c2dec38d2">{"x":{"data":[{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"y":[0.127829763849242,0.109450609839869,0.107420354455113,0.102504999313071,0.0825993374956113,0.0648155215313926,0.0626784106000702,0.0662657039490757,0.0617472408371369,0.0599001663893511,0.0475354531438428,0.0361324398174297,0.0262864644552657,0.018592865102505,0.0128074005098536,0.00764780411851807,0.00384679967638034,0.00193866491627105,0.129004159971166,0.107753765750071,0.107092976106447,0.100800456545572,0.0840254103653866,0.0640515415922027,0.0610028984636641,0.0649526183789629,0.0614534368570442,0.0596062294441858,0.0491387207713217,0.0370793097751813,0.0277531650322135,0.0187423971646117,0.0135011338549567,0.00786940393770556,0.00411491732620481,0.00205745866310241,0.128211202748123,0.107289337696374,0.106637842960155,0.0995602410530524,0.0849608362823341,0.0635207367813199,0.0599079023350164,0.0627359817581474,0.0619660334335253,0.0587381731495328,0.0508017827265055,0.0384678028340021,0.0291543894457853,0.0192042880199002,0.0140515569243526,0.00818810429838459,0.00436797607237514,0.00223581148111406,0.125009135957668,0.109382993962959,0.105348555056935,0.099121486310681,0.0851471254622795,0.0638639984797766,0.0586309219277602,0.0603411732031398,0.0622122173334698,0.0579585154434228,0.0524769408428469,0.0401105085439476,0.0301705866015699,0.0202598997237286,0.0144421218809841,0.00855125637689845,0.00460452266448378,0.0023680402274488,0.121583180512036,0.111475315148802,0.103620059780804,0.0994036359435692,0.0850793467431014,0.0646758985170317,0.0574848743014743,0.0581346656462536,0.0619467748689587,0.0571094393022685,0.0541637185392691,0.0413989285662715,0.0312910632030381,0.0216452716849812,0.0147574834303207,0.0088804817119836,0.00485177537435201,0.00249808672548482,0.118623539469934,0.113294385864919,0.102023368481049,0.0989883157594756,0.0856226845255058,0.0664434311769735,0.0566970646907951,0.0563978341407808,0.0608007979481334,0.0566400683955543,0.0543744656597321,0.0429039612425192,0.0322171558848675,0.0227842690225135,0.0150755200911941,0.00933314334568253,0.00504417212881163,0.00273582217155885,0.115769079575448,0.114926714213512,0.0997079800078621,0.0989217723367215,0.0865109226708598,0.0686387375751109,0.0564665580951311,0.0548239456393553,0.0594850339754029,0.0562559667546471,0.0541079350817094,0.0441820632335598,0.0330066827652047,0.0239231762789914,0.0152468130510473,0.00996799011624642,0.00513842870781153,0.00292019992137923],"text":["Age: 0-04<br />Proportion: 0.127829764","Age: 05-09<br />Proportion: 0.109450610","Age: 10–14<br />Proportion: 0.107420354","Age: 15–19<br />Proportion: 0.102504999","Age: 20–24<br />Proportion: 0.082599337","Age: 25–29<br />Proportion: 0.064815522","Age: 30–34<br />Proportion: 0.062678411","Age: 35–39<br />Proportion: 0.066265704","Age: 40–44<br />Proportion: 0.061747241","Age: 45–49<br />Proportion: 0.059900166","Age: 50–54<br />Proportion: 0.047535453","Age: 55–59<br />Proportion: 0.036132440","Age: 60–64<br />Proportion: 0.026286464","Age: 65–69<br />Proportion: 0.018592865","Age: 70–74<br />Proportion: 0.012807401","Age: 75–79<br />Proportion: 0.007647804","Age: 80–84<br />Proportion: 0.003846800","Age: 85+<br />Proportion: 0.001938665","Age: 0-04<br />Proportion: 0.129004160","Age: 05-09<br />Proportion: 0.107753766","Age: 10–14<br />Proportion: 0.107092976","Age: 15–19<br />Proportion: 0.100800457","Age: 20–24<br />Proportion: 0.084025410","Age: 25–29<br />Proportion: 0.064051542","Age: 30–34<br />Proportion: 0.061002898","Age: 35–39<br />Proportion: 0.064952618","Age: 40–44<br />Proportion: 0.061453437","Age: 45–49<br />Proportion: 0.059606229","Age: 50–54<br />Proportion: 0.049138721","Age: 55–59<br />Proportion: 0.037079310","Age: 60–64<br />Proportion: 0.027753165","Age: 65–69<br />Proportion: 0.018742397","Age: 70–74<br />Proportion: 0.013501134","Age: 75–79<br />Proportion: 0.007869404","Age: 80–84<br />Proportion: 0.004114917","Age: 85+<br />Proportion: 0.002057459","Age: 0-04<br />Proportion: 0.128211203","Age: 05-09<br />Proportion: 0.107289338","Age: 10–14<br />Proportion: 0.106637843","Age: 15–19<br />Proportion: 0.099560241","Age: 20–24<br />Proportion: 0.084960836","Age: 25–29<br />Proportion: 0.063520737","Age: 30–34<br />Proportion: 0.059907902","Age: 35–39<br />Proportion: 0.062735982","Age: 40–44<br />Proportion: 0.061966033","Age: 45–49<br />Proportion: 0.058738173","Age: 50–54<br />Proportion: 0.050801783","Age: 55–59<br />Proportion: 0.038467803","Age: 60–64<br />Proportion: 0.029154389","Age: 65–69<br />Proportion: 0.019204288","Age: 70–74<br />Proportion: 0.014051557","Age: 75–79<br />Proportion: 0.008188104","Age: 80–84<br />Proportion: 0.004367976","Age: 85+<br />Proportion: 0.002235811","Age: 0-04<br />Proportion: 0.125009136","Age: 05-09<br />Proportion: 0.109382994","Age: 10–14<br />Proportion: 0.105348555","Age: 15–19<br />Proportion: 0.099121486","Age: 20–24<br />Proportion: 0.085147125","Age: 25–29<br />Proportion: 0.063863998","Age: 30–34<br />Proportion: 0.058630922","Age: 35–39<br />Proportion: 0.060341173","Age: 40–44<br />Proportion: 0.062212217","Age: 45–49<br />Proportion: 0.057958515","Age: 50–54<br />Proportion: 0.052476941","Age: 55–59<br />Proportion: 0.040110509","Age: 60–64<br />Proportion: 0.030170587","Age: 65–69<br />Proportion: 0.020259900","Age: 70–74<br />Proportion: 0.014442122","Age: 75–79<br />Proportion: 0.008551256","Age: 80–84<br />Proportion: 0.004604523","Age: 85+<br />Proportion: 0.002368040","Age: 0-04<br />Proportion: 0.121583181","Age: 05-09<br />Proportion: 0.111475315","Age: 10–14<br />Proportion: 0.103620060","Age: 15–19<br />Proportion: 0.099403636","Age: 20–24<br />Proportion: 0.085079347","Age: 25–29<br />Proportion: 0.064675899","Age: 30–34<br />Proportion: 0.057484874","Age: 35–39<br />Proportion: 0.058134666","Age: 40–44<br />Proportion: 0.061946775","Age: 45–49<br />Proportion: 0.057109439","Age: 50–54<br />Proportion: 0.054163719","Age: 55–59<br />Proportion: 0.041398929","Age: 60–64<br />Proportion: 0.031291063","Age: 65–69<br />Proportion: 0.021645272","Age: 70–74<br />Proportion: 0.014757483","Age: 75–79<br />Proportion: 0.008880482","Age: 80–84<br />Proportion: 0.004851775","Age: 85+<br />Proportion: 0.002498087","Age: 0-04<br />Proportion: 0.118623539","Age: 05-09<br />Proportion: 0.113294386","Age: 10–14<br />Proportion: 0.102023368","Age: 15–19<br />Proportion: 0.098988316","Age: 20–24<br />Proportion: 0.085622685","Age: 25–29<br />Proportion: 0.066443431","Age: 30–34<br />Proportion: 0.056697065","Age: 35–39<br />Proportion: 0.056397834","Age: 40–44<br />Proportion: 0.060800798","Age: 45–49<br />Proportion: 0.056640068","Age: 50–54<br />Proportion: 0.054374466","Age: 55–59<br />Proportion: 0.042903961","Age: 60–64<br />Proportion: 0.032217156","Age: 65–69<br />Proportion: 0.022784269","Age: 70–74<br />Proportion: 0.015075520","Age: 75–79<br />Proportion: 0.009333143","Age: 80–84<br />Proportion: 0.005044172","Age: 85+<br />Proportion: 0.002735822","Age: 0-04<br />Proportion: 0.115769080","Age: 05-09<br />Proportion: 0.114926714","Age: 10–14<br />Proportion: 0.099707980","Age: 15–19<br />Proportion: 0.098921772","Age: 20–24<br />Proportion: 0.086510923","Age: 25–29<br />Proportion: 0.068638738","Age: 30–34<br />Proportion: 0.056466558","Age: 35–39<br />Proportion: 0.054823946","Age: 40–44<br />Proportion: 0.059485034","Age: 45–49<br />Proportion: 0.056255967","Age: 50–54<br />Proportion: 0.054107935","Age: 55–59<br />Proportion: 0.044182063","Age: 60–64<br />Proportion: 0.033006683","Age: 65–69<br />Proportion: 0.023923176","Age: 70–74<br />Proportion: 0.015246813","Age: 75–79<br />Proportion: 0.009967990","Age: 80–84<br />Proportion: 0.005138429","Age: 85+<br />Proportion: 0.002920200"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":["rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)"],"opacity":1,"size":5.66929133858268,"symbol":"circle","line":{"width":1.88976377952756,"color":["rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(229,229,229,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(200,189,215,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(170,151,200,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(139,113,185,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(106,77,170,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(69,42,155,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)","rgba(0,0,139,1)"]}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"y":[0.127829763849242,0.109450609839869,0.107420354455113,0.102504999313071,0.0825993374956113,0.0648155215313926,0.0626784106000702,0.0662657039490757,0.0617472408371369,0.0599001663893511,0.0475354531438428,0.0361324398174297,0.0262864644552657,0.018592865102505,0.0128074005098536,0.00764780411851807,0.00384679967638034,0.00193866491627105],"text":["Age: 0-04<br />Proportion: 0.127829764<br />Year: 2009","Age: 05-09<br />Proportion: 0.109450610<br />Year: 2009","Age: 10–14<br />Proportion: 0.107420354<br />Year: 2009","Age: 15–19<br />Proportion: 0.102504999<br />Year: 2009","Age: 20–24<br />Proportion: 0.082599337<br />Year: 2009","Age: 25–29<br />Proportion: 0.064815522<br />Year: 2009","Age: 30–34<br />Proportion: 0.062678411<br />Year: 2009","Age: 35–39<br />Proportion: 0.066265704<br />Year: 2009","Age: 40–44<br />Proportion: 0.061747241<br />Year: 2009","Age: 45–49<br />Proportion: 0.059900166<br />Year: 2009","Age: 50–54<br />Proportion: 0.047535453<br />Year: 2009","Age: 55–59<br />Proportion: 0.036132440<br />Year: 2009","Age: 60–64<br />Proportion: 0.026286464<br />Year: 2009","Age: 65–69<br />Proportion: 0.018592865<br />Year: 2009","Age: 70–74<br />Proportion: 0.012807401<br />Year: 2009","Age: 75–79<br />Proportion: 0.007647804<br />Year: 2009","Age: 80–84<br />Proportion: 0.003846800<br />Year: 2009","Age: 85+<br />Proportion: 0.001938665<br />Year: 2009"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(229,229,229,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"y":[0.129004159971166,0.107753765750071,0.107092976106447,0.100800456545572,0.0840254103653866,0.0640515415922027,0.0610028984636641,0.0649526183789629,0.0614534368570442,0.0596062294441858,0.0491387207713217,0.0370793097751813,0.0277531650322135,0.0187423971646117,0.0135011338549567,0.00786940393770556,0.00411491732620481,0.00205745866310241],"text":["Age: 0-04<br />Proportion: 0.129004160<br />Year: 2010","Age: 05-09<br />Proportion: 0.107753766<br />Year: 2010","Age: 10–14<br />Proportion: 0.107092976<br />Year: 2010","Age: 15–19<br />Proportion: 0.100800457<br />Year: 2010","Age: 20–24<br />Proportion: 0.084025410<br />Year: 2010","Age: 25–29<br />Proportion: 0.064051542<br />Year: 2010","Age: 30–34<br />Proportion: 0.061002898<br />Year: 2010","Age: 35–39<br />Proportion: 0.064952618<br />Year: 2010","Age: 40–44<br />Proportion: 0.061453437<br />Year: 2010","Age: 45–49<br />Proportion: 0.059606229<br />Year: 2010","Age: 50–54<br />Proportion: 0.049138721<br />Year: 2010","Age: 55–59<br />Proportion: 0.037079310<br />Year: 2010","Age: 60–64<br />Proportion: 0.027753165<br />Year: 2010","Age: 65–69<br />Proportion: 0.018742397<br />Year: 2010","Age: 70–74<br />Proportion: 0.013501134<br />Year: 2010","Age: 75–79<br />Proportion: 0.007869404<br />Year: 2010","Age: 80–84<br />Proportion: 0.004114917<br />Year: 2010","Age: 85+<br />Proportion: 0.002057459<br />Year: 2010"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(200,189,215,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"y":[0.128211202748123,0.107289337696374,0.106637842960155,0.0995602410530524,0.0849608362823341,0.0635207367813199,0.0599079023350164,0.0627359817581474,0.0619660334335253,0.0587381731495328,0.0508017827265055,0.0384678028340021,0.0291543894457853,0.0192042880199002,0.0140515569243526,0.00818810429838459,0.00436797607237514,0.00223581148111406],"text":["Age: 0-04<br />Proportion: 0.128211203<br />Year: 2011","Age: 05-09<br />Proportion: 0.107289338<br />Year: 2011","Age: 10–14<br />Proportion: 0.106637843<br />Year: 2011","Age: 15–19<br />Proportion: 0.099560241<br />Year: 2011","Age: 20–24<br />Proportion: 0.084960836<br />Year: 2011","Age: 25–29<br />Proportion: 0.063520737<br />Year: 2011","Age: 30–34<br />Proportion: 0.059907902<br />Year: 2011","Age: 35–39<br />Proportion: 0.062735982<br />Year: 2011","Age: 40–44<br />Proportion: 0.061966033<br />Year: 2011","Age: 45–49<br />Proportion: 0.058738173<br />Year: 2011","Age: 50–54<br />Proportion: 0.050801783<br />Year: 2011","Age: 55–59<br />Proportion: 0.038467803<br />Year: 2011","Age: 60–64<br />Proportion: 0.029154389<br />Year: 2011","Age: 65–69<br />Proportion: 0.019204288<br />Year: 2011","Age: 70–74<br />Proportion: 0.014051557<br />Year: 2011","Age: 75–79<br />Proportion: 0.008188104<br />Year: 2011","Age: 80–84<br />Proportion: 0.004367976<br />Year: 2011","Age: 85+<br />Proportion: 0.002235811<br />Year: 2011"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(170,151,200,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"y":[0.125009135957668,0.109382993962959,0.105348555056935,0.099121486310681,0.0851471254622795,0.0638639984797766,0.0586309219277602,0.0603411732031398,0.0622122173334698,0.0579585154434228,0.0524769408428469,0.0401105085439476,0.0301705866015699,0.0202598997237286,0.0144421218809841,0.00855125637689845,0.00460452266448378,0.0023680402274488],"text":["Age: 0-04<br />Proportion: 0.125009136<br />Year: 2012","Age: 05-09<br />Proportion: 0.109382994<br />Year: 2012","Age: 10–14<br />Proportion: 0.105348555<br />Year: 2012","Age: 15–19<br />Proportion: 0.099121486<br />Year: 2012","Age: 20–24<br />Proportion: 0.085147125<br />Year: 2012","Age: 25–29<br />Proportion: 0.063863998<br />Year: 2012","Age: 30–34<br />Proportion: 0.058630922<br />Year: 2012","Age: 35–39<br />Proportion: 0.060341173<br />Year: 2012","Age: 40–44<br />Proportion: 0.062212217<br />Year: 2012","Age: 45–49<br />Proportion: 0.057958515<br />Year: 2012","Age: 50–54<br />Proportion: 0.052476941<br />Year: 2012","Age: 55–59<br />Proportion: 0.040110509<br />Year: 2012","Age: 60–64<br />Proportion: 0.030170587<br />Year: 2012","Age: 65–69<br />Proportion: 0.020259900<br />Year: 2012","Age: 70–74<br />Proportion: 0.014442122<br />Year: 2012","Age: 75–79<br />Proportion: 0.008551256<br />Year: 2012","Age: 80–84<br />Proportion: 0.004604523<br />Year: 2012","Age: 85+<br />Proportion: 0.002368040<br />Year: 2012"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(139,113,185,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"y":[0.121583180512036,0.111475315148802,0.103620059780804,0.0994036359435692,0.0850793467431014,0.0646758985170317,0.0574848743014743,0.0581346656462536,0.0619467748689587,0.0571094393022685,0.0541637185392691,0.0413989285662715,0.0312910632030381,0.0216452716849812,0.0147574834303207,0.0088804817119836,0.00485177537435201,0.00249808672548482],"text":["Age: 0-04<br />Proportion: 0.121583181<br />Year: 2013","Age: 05-09<br />Proportion: 0.111475315<br />Year: 2013","Age: 10–14<br />Proportion: 0.103620060<br />Year: 2013","Age: 15–19<br />Proportion: 0.099403636<br />Year: 2013","Age: 20–24<br />Proportion: 0.085079347<br />Year: 2013","Age: 25–29<br />Proportion: 0.064675899<br />Year: 2013","Age: 30–34<br />Proportion: 0.057484874<br />Year: 2013","Age: 35–39<br />Proportion: 0.058134666<br />Year: 2013","Age: 40–44<br />Proportion: 0.061946775<br />Year: 2013","Age: 45–49<br />Proportion: 0.057109439<br />Year: 2013","Age: 50–54<br />Proportion: 0.054163719<br />Year: 2013","Age: 55–59<br />Proportion: 0.041398929<br />Year: 2013","Age: 60–64<br />Proportion: 0.031291063<br />Year: 2013","Age: 65–69<br />Proportion: 0.021645272<br />Year: 2013","Age: 70–74<br />Proportion: 0.014757483<br />Year: 2013","Age: 75–79<br />Proportion: 0.008880482<br />Year: 2013","Age: 80–84<br />Proportion: 0.004851775<br />Year: 2013","Age: 85+<br />Proportion: 0.002498087<br />Year: 2013"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(106,77,170,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"y":[0.118623539469934,0.113294385864919,0.102023368481049,0.0989883157594756,0.0856226845255058,0.0664434311769735,0.0566970646907951,0.0563978341407808,0.0608007979481334,0.0566400683955543,0.0543744656597321,0.0429039612425192,0.0322171558848675,0.0227842690225135,0.0150755200911941,0.00933314334568253,0.00504417212881163,0.00273582217155885],"text":["Age: 0-04<br />Proportion: 0.118623539<br />Year: 2014","Age: 05-09<br />Proportion: 0.113294386<br />Year: 2014","Age: 10–14<br />Proportion: 0.102023368<br />Year: 2014","Age: 15–19<br />Proportion: 0.098988316<br />Year: 2014","Age: 20–24<br />Proportion: 0.085622685<br />Year: 2014","Age: 25–29<br />Proportion: 0.066443431<br />Year: 2014","Age: 30–34<br />Proportion: 0.056697065<br />Year: 2014","Age: 35–39<br />Proportion: 0.056397834<br />Year: 2014","Age: 40–44<br />Proportion: 0.060800798<br />Year: 2014","Age: 45–49<br />Proportion: 0.056640068<br />Year: 2014","Age: 50–54<br />Proportion: 0.054374466<br />Year: 2014","Age: 55–59<br />Proportion: 0.042903961<br />Year: 2014","Age: 60–64<br />Proportion: 0.032217156<br />Year: 2014","Age: 65–69<br />Proportion: 0.022784269<br />Year: 2014","Age: 70–74<br />Proportion: 0.015075520<br />Year: 2014","Age: 75–79<br />Proportion: 0.009333143<br />Year: 2014","Age: 80–84<br />Proportion: 0.005044172<br />Year: 2014","Age: 85+<br />Proportion: 0.002735822<br />Year: 2014"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(69,42,155,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"y":[0.115769079575448,0.114926714213512,0.0997079800078621,0.0989217723367215,0.0865109226708598,0.0686387375751109,0.0564665580951311,0.0548239456393553,0.0594850339754029,0.0562559667546471,0.0541079350817094,0.0441820632335598,0.0330066827652047,0.0239231762789914,0.0152468130510473,0.00996799011624642,0.00513842870781153,0.00292019992137923],"text":["Age: 0-04<br />Proportion: 0.115769080<br />Year: 2015","Age: 05-09<br />Proportion: 0.114926714<br />Year: 2015","Age: 10–14<br />Proportion: 0.099707980<br />Year: 2015","Age: 15–19<br />Proportion: 0.098921772<br />Year: 2015","Age: 20–24<br />Proportion: 0.086510923<br />Year: 2015","Age: 25–29<br />Proportion: 0.068638738<br />Year: 2015","Age: 30–34<br />Proportion: 0.056466558<br />Year: 2015","Age: 35–39<br />Proportion: 0.054823946<br />Year: 2015","Age: 40–44<br />Proportion: 0.059485034<br />Year: 2015","Age: 45–49<br />Proportion: 0.056255967<br />Year: 2015","Age: 50–54<br />Proportion: 0.054107935<br />Year: 2015","Age: 55–59<br />Proportion: 0.044182063<br />Year: 2015","Age: 60–64<br />Proportion: 0.033006683<br />Year: 2015","Age: 65–69<br />Proportion: 0.023923176<br />Year: 2015","Age: 70–74<br />Proportion: 0.015246813<br />Year: 2015","Age: 75–79<br />Proportion: 0.009967990<br />Year: 2015","Age: 80–84<br />Proportion: 0.005138429<br />Year: 2015","Age: 85+<br />Proportion: 0.002920200<br />Year: 2015"],"type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,139,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"y":[0.135752049423785,0.104698823808958,0.101966258762029,0.100109896637757,0.0875608886776761,0.0631311631222526,0.0620618985386717,0.062581679933468,0.0609332303671142,0.0575769276464298,0.0497208031365094,0.0371866460734228,0.0285137222288226,0.0187715338006416,0.0142123084234288,0.00833135321373411,0.00442556730426518,0.00246524890103362],"text":["Age: 0-04<br />Proportion: 0.135752049<br />Standard: Maori2011","Age: 05-09<br />Proportion: 0.104698824<br />Standard: Maori2011","Age: 10–14<br />Proportion: 0.101966259<br />Standard: Maori2011","Age: 15–19<br />Proportion: 0.100109897<br />Standard: Maori2011","Age: 20–24<br />Proportion: 0.087560889<br />Standard: Maori2011","Age: 25–29<br />Proportion: 0.063131163<br />Standard: Maori2011","Age: 30–34<br />Proportion: 0.062061899<br />Standard: Maori2011","Age: 35–39<br />Proportion: 0.062581680<br />Standard: Maori2011","Age: 40–44<br />Proportion: 0.060933230<br />Standard: Maori2011","Age: 45–49<br />Proportion: 0.057576928<br />Standard: Maori2011","Age: 50–54<br />Proportion: 0.049720803<br />Standard: Maori2011","Age: 55–59<br />Proportion: 0.037186646<br />Standard: Maori2011","Age: 60–64<br />Proportion: 0.028513722<br />Standard: Maori2011","Age: 65–69<br />Proportion: 0.018771534<br />Standard: Maori2011","Age: 70–74<br />Proportion: 0.014212308<br />Standard: Maori2011","Age: 75–79<br />Proportion: 0.008331353<br />Standard: Maori2011","Age: 80–84<br />Proportion: 0.004425567<br />Standard: Maori2011","Age: 85+<br />Proportion: 0.002465249<br />Standard: Maori2011"],"type":"scatter","mode":"lines","line":{"width":3.02362204724409,"color":"rgba(255,0,0,1)","dash":"solid"},"hoveron":"points","name":"Maori2011","legendgroup":"Maori2011","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"y":[0.0886,0.0869,0.086,0.0847,0.0822,0.0793,0.0761,0.0715,0.0659,0.0604,0.0537,0.0455,0.0372,0.0296,0.0221,0.0152,0.0091,0.00635],"text":["Age: 0-04<br />Proportion: 0.088600000<br />Standard: WHO","Age: 05-09<br />Proportion: 0.086900000<br />Standard: WHO","Age: 10–14<br />Proportion: 0.086000000<br />Standard: WHO","Age: 15–19<br />Proportion: 0.084700000<br />Standard: WHO","Age: 20–24<br />Proportion: 0.082200000<br />Standard: WHO","Age: 25–29<br />Proportion: 0.079300000<br />Standard: WHO","Age: 30–34<br />Proportion: 0.076100000<br />Standard: WHO","Age: 35–39<br />Proportion: 0.071500000<br />Standard: WHO","Age: 40–44<br />Proportion: 0.065900000<br />Standard: WHO","Age: 45–49<br />Proportion: 0.060400000<br />Standard: WHO","Age: 50–54<br />Proportion: 0.053700000<br />Standard: WHO","Age: 55–59<br />Proportion: 0.045500000<br />Standard: WHO","Age: 60–64<br />Proportion: 0.037200000<br />Standard: WHO","Age: 65–69<br />Proportion: 0.029600000<br />Standard: WHO","Age: 70–74<br />Proportion: 0.022100000<br />Standard: WHO","Age: 75–79<br />Proportion: 0.015200000<br />Standard: WHO","Age: 80–84<br />Proportion: 0.009100000<br />Standard: WHO","Age: 85+<br />Proportion: 0.006350000<br />Standard: WHO"],"type":"scatter","mode":"lines","line":{"width":3.02362204724409,"color":"rgba(255,0,0,1)","dash":"dash"},"hoveron":"points","name":"WHO","legendgroup":"WHO","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":28.7853881278539,"r":7.30593607305936,"b":42.7397260273973,"l":48.9497716894977},"plot_bgcolor":"rgba(179,179,179,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"type":"linear","autorange":false,"range":[0.4,18.6],"tickmode":"array","ticktext":["0-04","05-09","10–14","15–19","20–24","25–29","30–34","35–39","40–44","45–49","50–54","55–59","60–64","65–69","70–74","75–79","80–84","85+"],"tickvals":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],"categoryorder":"array","categoryarray":["0-04","05-09","10–14","15–19","20–24","25–29","30–34","35–39","40–44","45–49","50–54","55–59","60–64","65–69","70–74","75–79","80–84","85+"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"y","title":"Age","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"type":"linear","autorange":false,"range":[-0.00475200430910466,0.142442718649161],"tickmode":"array","ticktext":["0.00","0.05","0.10"],"tickvals":[0,0.05,0.1],"categoryorder":"array","categoryarray":["0.00","0.05","0.10"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"x","title":"Proportion","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"y":0.945866141732283},"annotations":[{"text":"Standard","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest","width":1008,"height":576,"barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"cloud":false},"source":"A","attrs":{"ec2c225b36cc":{"x":{},"y":{},"colour":{},"type":"scatter"},"ec2c126a9cb3":{"x":{},"y":{},"colour":{}},"ec2c1555b537":{"x":{},"y":{},"linetype":{}}},"cur_data":"ec2c225b36cc","visdat":{"ec2c225b36cc":["function (y) ","x"],"ec2c126a9cb3":["function (y) ","x"],"ec2c1555b537":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1}},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":{"render":[{"code":"function(el, x) { var ctConfig = crosstalk.var('plotlyCrosstalkOpts').set({\"on\":\"plotly_click\",\"persistent\":false,\"dynamic\":false,\"selectize\":false,\"opacityDim\":0.2,\"selected\":{\"opacity\":1}}); }","data":null}]}}</script>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

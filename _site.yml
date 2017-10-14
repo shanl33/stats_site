@@ -1,2 +1,7 @@
-name: “shan-web”
-href: index.html
+name: "Stats780"
+output_dir: "."
+navbar:
+  title: "Stats780"
+  left:
+    - text: "Maori age distribution"
+      href: index.html
