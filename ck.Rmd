@@ -144,7 +144,7 @@ mortality_allCIs <- rbind(mortalityRGK, tidy_htest(mortalityG1), tidy_htest(mort
 ## Age distribution for the Cook Islands (2011 & 2016 Census)
 ### Comparing Census population data with the WHO standard
 
-```{r, fig.width=10, fig.height=6}
+```{r, fig.width=12, fig.height=8}
 # Plot: Census popn trends
 Age <- do.call(cbind.data.frame, lapply(Popn[,-1], age_p)) 
 Age <- rbind(Age[1:2, ], Age[3, ]+ Age[4, ])
@@ -158,23 +158,22 @@ p1 <- ggplot(Age_p, aes(x=Age, y=Proportion, fill=Census)) +
 ggplotly(p1)
 ```
 
-## Incidences of cancer for the Cook Islands (2009-2015)
-### Age-adjusted, WHO standardised rate per 100 000 people
-
-```{r, fig.width=10, fig.height=6}
-# Cancer plot
-p2 <- plot_allCIs(cancer_allCIs) +
-  scale_y_continuous(limits=c(0, 250))
-ggplotly(p2, tooltip=c("x", "y", "colour"))
-```
-
-
 ## Mortality rate for the Cook Islands (2009-2015)
 ### Age-adjusted, WHO standardised rate per 100 000 people
 
-```{r, fig.width=10, fig.height=6}
+```{r, fig.width=12, fig.height=8}
 # Mortality plot
 p3 <- plot_allCIs(mortality_allCIs) + 
   scale_y_continuous(limits=c(400, 1000))
 ggplotly(p3, tooltip=c("x", "y", "colour"))
+```
+
+## Incidences of cancer for the Cook Islands (2009-2015)
+### Age-adjusted, WHO standardised rate per 100 000 people
+
+```{r, fig.width=12, fig.height=8}
+# Cancer plot
+p2 <- plot_allCIs(cancer_allCIs) +
+  scale_y_continuous(limits=c(0, 250))
+ggplotly(p2, tooltip=c("x", "y", "colour"))
 ```
