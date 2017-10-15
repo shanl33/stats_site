@@ -2,6 +2,13 @@
 output: html_document
 ---
 
+<style>
+.figure {
+   margin-top: 100px;
+   margin-bottom: 100px;
+}
+</style>
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
 library(ggplot2)
@@ -171,6 +178,7 @@ plotlyInt <- ggplotly(MaoriInt_plot, tooltip=c("x", "y", "colour"))
 subplot(plotlyWHO, plotlyInt, shareY=TRUE, titleX=TRUE) 
   #layout(title="WHO standard (left) and Maori 2011 standard (right)")
 ```
+
 
 ### WHO standardised rates lung cancer for NZ Maori
 ```{r, fig.width=10, fig.height=8}
