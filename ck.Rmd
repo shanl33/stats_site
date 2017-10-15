@@ -141,13 +141,31 @@ cancer_allCIs <- rbind(cancerRGK, tidy_htest(cancerG1), tidy_htest(cancerG2, "Ga
 mortality_allCIs <- rbind(mortalityRGK, tidy_htest(mortalityG1), tidy_htest(mortalityG2, "Gamma_2"))
 ```
 
+## Age distribution for the Cook Islands (2011 & 2016 Census)
+### Comparing Census population data with the WHO standard
+
+```{r, fig.width=10, fig.height=6}
+# Plot: Census popn trends
+Age <- do.call(cbind.data.frame, lapply(Popn[,-1], age_p)) 
+Age <- rbind(Age[1:2, ], Age[3, ]+ Age[4, ])
+Age_p <- data.frame(Age=c("0-14", "15-44", "45+"), 
+                    Proportion=round(c(Age$Yr2011, Age$Yr2016, WHOweights3), 3),
+                       Census=c(rep(c("2011", "2016", "WHO"), each=3)))
+p1 <- ggplot(Age_p, aes(x=Age, y=Proportion, fill=Census)) +
+  geom_col(position="dodge") +
+  theme(legend.title=element_blank())
+
+ggplotly(p1)
+```
+
 ## Incidences of cancer for the Cook Islands (2009-2015)
 ### Age-adjusted, WHO standardised rate per 100 000 people
 
 ```{r, fig.width=10, fig.height=6}
 # Cancer plot
-plot_allCIs(cancer_allCIs) +
+p2 <- plot_allCIs(cancer_allCIs) +
   scale_y_continuous(limits=c(0, 250))
+ggplotly(p2, tooltip=c("x", "y", "colour"))
 ```
 
 
@@ -156,21 +174,7 @@ plot_allCIs(cancer_allCIs) +
 
 ```{r, fig.width=10, fig.height=6}
 # Mortality plot
-plot_allCIs(mortality_allCIs) + 
+p3 <- plot_allCIs(mortality_allCIs) + 
   scale_y_continuous(limits=c(400, 1000))
-```
-
-## Age distribution for the Cook Islands (2009-2015)
-### Comparisons across the years and with the WHO standard
-
-```{r, fig.width=10, fig.height=6}
-# Plot: Census popn trends
-Age <- do.call(cbind.data.frame, lapply(Popn[,-1], age_p)) 
-Age <- rbind(Age[1:2, ], Age[3, ]+ Age[4, ])
-Age_p <- data.frame(Age=c("0-14", "15-44", "45+"), 
-                    Proportion=round(c(Age$Yr2006, Age$Yr2011, Age$Yr2016, WHOweights3), 3),
-                       Census=c(rep(c("2006", "2011", "2016", "WHO"), each=3)))
-ggplot(Age_p, aes(x=Age, y=Proportion, fill=Census)) +
-  geom_col(position="dodge") +
-  theme(legend.title=element_blank())
+ggplotly(p3, tooltip=c("x", "y", "colour"))
 ```
