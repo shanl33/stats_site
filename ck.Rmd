@@ -1,0 +1,176 @@
+---
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
+library(ggplot2)
+library(plotly)
+library(asht)
+```
+
+```{r}
+# Set up 
+# Load data
+source("loadData.R")
+
+# Functions that will be used throughout report
+# Function for finding population proportion for each age band
+age_p <- function(x) {
+  total <- sum(x)
+  propns <- x/total
+  return(propns)
+}
+
+## For Weights calculations for wspoissonTest() 
+# Sum of the WHO standard weights (ie. sum(n.standard))
+# Common value used regardless of data set
+# Slightly over 100
+WHO_sum <- sum(WHOdf$Propn)
+
+# Function to make WHO proportions and incidence counts collapse into 3 age-bands
+count3bands <- function(x, a=1, b=4) {
+  c(sum(x[1:a]), sum(x[(a+1):b]), sum(x[-(1:b)], na.rm=T))
+}
+
+cancer3bands <- do.call(cbind.data.frame, lapply(cancer[-(1:3)], count3bands))
+mortality3bands <- do.call(cbind.data.frame, lapply(mortality[-(1:3)], count3bands, a=3, b=6))
+
+#### Functions for calculating, collating results and plotting 95% confidence intervals
+## Function for collating results from wspoissonTest() 
+# Extract the estimate and CI into a data frame for plotting
+# Default type="max" is Gamma 1
+estimateCI <- function(counts, W, type="max") {
+  results <- wspoissonTest(counts, W, wmtype=type)
+  keep <- data.frame(Value = c(results$estimate, results$conf.int[1], results$conf.int[2])*100000,
+                     Group = c("Estimate", "Low", "Up"))
+  return(keep)
+}
+
+## Function for finding CIs using Rothman/Greenland and Keyfitz methods 
+RGandK <- function(htest, counts) {
+  # Point estimates from wspoissonTest()
+  rate <- htest[htest$Group=="Estimate", "Value"]
+  # Number of observed incidences (for 2009 to 2015)
+  a <- colSums(counts, na.rm = TRUE)
+  n <- length(a)
+  year <- 2009:2015
+  # Rothman Greenland
+  Upp_RG <- exp(log(rate)+1.96*sqrt(1/a))
+  Low_RG <- exp(log(rate)-1.96*sqrt(1/a))
+  # Keyfitz, 1966 
+  # Assumes standard population is not subject to sampling error, even if directly standardised.
+  Upp_norm <- rate + 1.96*rate/sqrt(a)
+  Low_norm <- rate - 1.96*rate/sqrt(a)
+  CIs <- data.frame(Value=c(Low_RG, Upp_RG, Low_norm, Upp_norm), 
+                    Group=rep(c("LowRG", "UpRG", "LowKey", "UpKey"), each=n), 
+                    Method=rep(c("Rothman/Greenland", "Keyfitz"), each=2*n),
+                    Year=year)
+  estimate <- data.frame(Value=rate, Group="Estimate", 
+                         Method="Estimate", Year=year)
+  return(rbind(estimate, CIs))
+}
+
+## Function for tidying collated output from wspoissonTest() for plotting
+# Remove estimate, add year, group
+tidy_htest <- function(htest, group_name="Gamma_1") {
+  tidy <- htest[htest$Group!="Estimate", ]
+  tidy$Group <- paste(tidy$Group, group_name, sep="")
+  tidy$Method <- group_name
+  tidy$Year <- rep(2009:2015, each=2)
+  return(tidy)
+}
+
+## Function for plotting confidence intervals on one plot
+# allCIs needs to be a dataframe with the variables: Year, Value, Group, Method
+plot_allCIs <- function(allCIs) {
+  allCIs$Value <- round(allCIs$Value, 1)
+  ggplot(allCIs, aes(x=Year, y=Value, group=Group, colour=Method, legendgroup=Method)) +
+  geom_point() +
+  geom_line() +
+  theme_classic() +
+  scale_x_discrete(limits=2009:2015) +
+  labs(y="Rate per 100 000", colour="")
+}
+
+# Calculations for CI using 3 age bands
+
+# Age proportions for 2006 and 2011 census (using 3 age-bands 0-14, 15-44, 45+) 
+age3 <- Popn[, 3:4] # Keep 2011 and 2016 only
+age3[3, ] <- age3[3, ] + age3[4,] # Collapse last two age groups
+age3 <- age3[-4,]
+# Proportions
+age3_p <- do.call(cbind.data.frame, lapply(age3, age_p))
+rownames(age3_p) <- c("0-14", "15-44", "45+")
+
+# Weights (W) for wspoissonTest() when using age-standardisation
+# a). Population size for each of the 3 age-bands (n.x)
+# Age group estimates for years around census years
+# Use 2011 Census for 2009 and 2013 (all except last two data points)
+age_n <- do.call(cbind.data.frame, lapply(ResPopEst$Total[-c(1, 7, 8)], function(x) x*age3_p$Yr2011))
+# Use 2016 Census for 2014 and 2015
+age_n <- cbind(age_n, do.call(cbind.data.frame, lapply(ResPopEst$Total[c(7, 8)], function(x) x*age3_p$Yr2016)))
+colnames(age_n) <- rownames(ResPopEst)[-1]
+age_n["2011"] <- age3["Yr2011"] # Use Census counts for 2011
+# b). Weights for WHO standard
+WHOweights3 <- count3bands(WHOdf$Propn, a=3, b=9)/WHO_sum
+
+# c). Weights for wspoissonTest()
+W3C <- WHOweights3*100/(age_n*WHO_sum)
+colnames(W3C) <- colnames(cancer3bands)
+
+#### 95% Confidence intervals ####
+# Gamma 1 confidence intervals
+cancerG1 <- do.call(rbind.data.frame, 
+                     mapply(estimateCI, counts=cancer3bands, W=W3C, SIMPLIFY=FALSE))
+mortalityG1 <- do.call(rbind.data.frame, 
+                       mapply(estimateCI, counts=mortality3bands, W=W3C, SIMPLIFY=FALSE))
+
+# Gamma 2 confidence intervals 
+cancerG2 <- do.call(rbind.data.frame, 
+                     mapply(estimateCI, counts=cancer3bands, W=W3C, SIMPLIFY=FALSE, type="tcz"))
+mortalityG2 <- do.call(rbind.data.frame, 
+                       mapply(estimateCI, counts=mortality3bands, W=W3C, SIMPLIFY=FALSE, type="tcz"))
+
+# Rothman/Greenland and Keyfitz
+cancerRGK <- RGandK(cancerG1, cancer[4:10])
+mortalityRGK <- RGandK(mortalityG1, mortality[4:10])
+
+# Collate data for plotting
+cancer_allCIs <- rbind(cancerRGK, tidy_htest(cancerG1), tidy_htest(cancerG2, "Gamma_2"))
+mortality_allCIs <- rbind(mortalityRGK, tidy_htest(mortalityG1), tidy_htest(mortalityG2, "Gamma_2"))
+```
+
+## Incidences of cancer for the Cook Islands (2009-2015)
+### Age-adjusted, WHO standardised rate per 100 000 people
+
+```{r, fig.width=10, fig.height=8}
+# Cancer plot
+plot_allCIs(cancer_allCIs) +
+  scale_y_continuous(limits=c(0, 250))
+```
+
+
+## Mortality rate for the Cook Islands (2009-2015)
+### Age-adjusted, WHO standardised rate per 100 000 people
+
+```{r, fig.width=10, fig.height=8}
+# Mortality plot
+plot_allCIs(mortality_allCIs) + 
+  scale_y_continuous(limits=c(400, 1000))
+```
+
+## Age distribution for the Cook Islands (2009-2015)
+### Comparisons across the years and with the WHO standard
+
+```{r, fig.width=10, fig.height=8}
+# Plot: Census popn trends
+Age <- do.call(cbind.data.frame, lapply(Popn[,-1], age_p)) 
+Age <- rbind(Age[1:2, ], Age[3, ]+ Age[4, ])
+Age_p <- data.frame(Age=c("0-14", "15-44", "45+"), 
+                    Proportion=round(c(Age$Yr2006, Age$Yr2011, Age$Yr2016, WHOweights3), 3),
+                       Census=c(rep(c("2006", "2011", "2016", "WHO"), each=3)))
+ggplot(Age_p, aes(x=Age, y=Proportion, fill=Census)) +
+  geom_col(position="dodge") +
+  theme(legend.title=element_blank())
+```

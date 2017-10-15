@@ -1,9 +1,11 @@
-name: "Stats780"
+name: "Rate_estimates"
 output_dir: "."
 navbar:
-  title: "Stats780"
+  title: "Rate estimates"
   left:
-    - text: "Maori age distribution"
+    - text: "Maori lung cancer"
       href: index.html
-    - text: "Standardisation"
-      href: lung.html
+    - text: "Maori age distribution"
+      href: maori.html
+    - text: "Cook Island health outcomes"
+      href: ck.html

@@ -1,0 +1,71 @@
+---
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
+library(ggplot2)
+library(plotly)
+library(asht)
+```
+
+## Age distribution of Maori Population (2009-2015)
+
+```{r, fig.width=14, fig.height=8}
+# Load data files
+load("data/WHOdf.RData")
+maoriPopn <- read.csv("data/MaoriPopn.csv")
+maoriStd <- read.csv("data/MaoriStandard2011.csv")
+
+# Functions that will be used throughout report
+# Function for finding population proportion for each age band
+age_p <- function(x) {
+  total <- sum(x)
+  propns <- x/total
+  return(propns)
+}
+
+# Tidy data
+colnames(maoriPopn) <- c("Age", 2009:2015)
+# Change to numeric
+maoriPopnCounts <- do.call(cbind.data.frame, 
+                           lapply(maoriPopn[-1], function(x) as.numeric(gsub(",", "", x))))
+maoriStd$Population <- as.numeric(gsub(",", "", maoriStd$Population))
+maoriStd$Age <- factor(c("0-04", "05-09", as.character(maoriStd$Age[3:18])))
+
+# Population size for each of the 18 age-bands (n.x)
+# Combine last two age bands (85+) to match the 18 age-bands from the lung cancer data
+maori18 <- rbind(maoriPopnCounts[1:17, ], (maoriPopnCounts[18, ] + maoriPopnCounts[19, ]))
+
+# Standards compared to age distribution for Maori (across the 18 age-bands)
+# Plot: Census popn trends
+MaoriAge_p <- do.call(c, lapply(maori18, age_p)) 
+MaoriAge <- data.frame(Age = maoriStd$Age,
+                       Proportion = MaoriAge_p,
+                       Year = rep(2009:2015, each=18))
+#MaoriAge$Year <- as.factor(MaoriAge$Year)
+
+# Weights for WHO standard
+WHOweights18 <- c(WHOdf$Propn[1:17], sum(WHOdf$Propn[18:21]))
+
+# WHO and internal standards for Maori (With WHO and 2011 standard plotted)
+maoriStandards <- data.frame(Age = rep(maoriStd$Age, 2),
+                             Proportion = c(age_p(maoriStd$Population), 0.01*WHOweights18),
+                             Standard = rep(c("Maori2011", "WHO"), each=18))
+
+# Round proportions to 3dp
+MaoriAge$Proportion <- round(MaoriAge$Proportion, 3)
+maoriStandards$Proportion <- round(maoriStandards$Proportion, 3)
+
+MaoriAgePlot <- ggplot() +
+  geom_point(data=MaoriAge, aes(x=Age, y=Proportion, colour=Year)) +
+  geom_line(data=MaoriAge, aes(x=Age, y=Proportion, colour=Year, group=Year)) +
+  scale_color_continuous(low="gray90", high="blue4", guide=FALSE) +
+  #scale_color_brewer(type="seq", guide=FALSE) +
+  theme(panel.grid=element_blank(), panel.background=element_rect(fill="grey70"), 
+        legend.key=element_rect(fill="grey70")) +
+  geom_line(data=maoriStandards, 
+            aes(x=Age, y=Proportion, group=Standard, linetype=Standard), size=0.8, colour="red") 
+
+ggplotly(MaoriAgePlot, tooltip=c("x", "y", "group")) 
+```
