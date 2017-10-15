@@ -2,13 +2,6 @@
 output: html_document
 ---
 
-<style>
-.figure {
-   margin-top: 100px;
-   margin-bottom: 100px;
-}
-</style>
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
 library(ggplot2)
@@ -17,7 +10,7 @@ library(asht)
 ```
 
 ## Age-adjusted lung cancer rates for NZ Maori
-### WHO standard (left) and Maori 2011 standard (right)
+### WHO standard (left) and 2011 Maori population standard (right)
 
 ```{r, fig.width=16, fig.height=8}
 # Load data
@@ -179,15 +172,16 @@ subplot(plotlyWHO, plotlyInt, shareY=TRUE, titleX=TRUE)
   #layout(title="WHO standard (left) and Maori 2011 standard (right)")
 ```
 
-
-### WHO standardised rates lung cancer for NZ Maori
+## Age-adjusted lung cancer rates for NZ Maori
+### WHO standard
 ```{r, fig.width=10, fig.height=8}
 # WHO standard alone
 ggplotly(plot_allCIs(lung_allCIs), tooltip=c("x", "y", "colour")) 
 ```
 
-### Internally standardised rates lung cancer for NZ Maori
+## Age-adjusted lung cancer rates for NZ Maori
+### 2011 Maori population standard
 ```{r, fig.width=10, fig.height=8}
-# Internal standard standard alone
+# 2011 Maori standard alone
 ggplotly(plot_allCIs(lung_allintStd), tooltip=c("x", "y", "colour")) 
 ```
