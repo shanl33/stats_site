@@ -94,6 +94,13 @@ plot_allCIs <- function(allCIs) {
 }
 
 # Calculations for CI using 3 age bands
+# Load data on Maori population 2011 (use as standard)
+maoriStd <- read.csv("data/MaoriStandard2011.csv")
+# Tidy data: Change to numeric
+maoriStd$Population <- as.numeric(gsub(",", "", maoriStd$Population))
+maoriStd$Age <- factor(c("0-04", "05-09", as.character(maoriStd$Age[3:18])))
+# Split 2011 Maori standard into 3 age bands
+maoriStd3 <- age_p(count3bands(maoriStd$Population, a=3, b=9))
 
 # Age proportions for 2006 and 2011 census (using 3 age-bands 0-14, 15-44, 45+) 
 age3 <- Popn[, 3:4] # Keep 2011 and 2016 only
@@ -112,33 +119,59 @@ age_n <- do.call(cbind.data.frame, lapply(ResPopEst$Total[-c(1, 7, 8)], function
 age_n <- cbind(age_n, do.call(cbind.data.frame, lapply(ResPopEst$Total[c(7, 8)], function(x) x*age3_p$Yr2016)))
 colnames(age_n) <- rownames(ResPopEst)[-1]
 age_n["2011"] <- age3["Yr2011"] # Use Census counts for 2011
-# b). Weights for WHO standard
+# b). Weights for WHO standard and Maori 2011 std
 WHOweights3 <- count3bands(WHOdf$Propn, a=3, b=9)/WHO_sum
+# maoriStd3 for Maori 2011 std already calculated
 
 # c). Weights for wspoissonTest()
 W3C <- WHOweights3*100/(age_n*WHO_sum)
 colnames(W3C) <- colnames(cancer3bands)
+# maoriStd3 sums to 1
+W3CM <- maoriStd3/age_n
 
 #### 95% Confidence intervals ####
 # Gamma 1 confidence intervals
+# Using WHO standard
 cancerG1 <- do.call(rbind.data.frame, 
                      mapply(estimateCI, counts=cancer3bands, W=W3C, SIMPLIFY=FALSE))
 mortalityG1 <- do.call(rbind.data.frame, 
                        mapply(estimateCI, counts=mortality3bands, W=W3C, SIMPLIFY=FALSE))
 
+# Using Maori 2011 standard
+cancerG1_CM <- do.call(rbind.data.frame, 
+                     mapply(estimateCI, counts=cancer3bands, W=W3CM, SIMPLIFY=FALSE))
+mortalityG1_CM <- do.call(rbind.data.frame, 
+                       mapply(estimateCI, counts=mortality3bands, W=W3CM, SIMPLIFY=FALSE))
+
 # Gamma 2 confidence intervals 
+# Using WHO standard
 cancerG2 <- do.call(rbind.data.frame, 
                      mapply(estimateCI, counts=cancer3bands, W=W3C, SIMPLIFY=FALSE, type="tcz"))
+
 mortalityG2 <- do.call(rbind.data.frame, 
                        mapply(estimateCI, counts=mortality3bands, W=W3C, SIMPLIFY=FALSE, type="tcz"))
 
+# Using Maori 2011 standard
+cancerG2_CM <- do.call(rbind.data.frame, 
+                     mapply(estimateCI, counts=cancer3bands, W=W3CM, SIMPLIFY=FALSE, type="tcz"))
+mortalityG2_CM <- do.call(rbind.data.frame, 
+                       mapply(estimateCI, counts=mortality3bands, W=W3CM, SIMPLIFY=FALSE, type="tcz"))
+
 # Rothman/Greenland and Keyfitz
+# Using WHO standard
 cancerRGK <- RGandK(cancerG1, cancer[4:10])
 mortalityRGK <- RGandK(mortalityG1, mortality[4:10])
+# Using Maori 2011 standard
+cancerRGK_CM <- RGandK(cancerG1_CM, cancer[4:10])
+mortalityRGK_CM <- RGandK(mortalityG1_CM, mortality[4:10])
 
 # Collate data for plotting
+# WHO standard
 cancer_allCIs <- rbind(cancerRGK, tidy_htest(cancerG1), tidy_htest(cancerG2, "Gamma_2"))
 mortality_allCIs <- rbind(mortalityRGK, tidy_htest(mortalityG1), tidy_htest(mortalityG2, "Gamma_2"))
+# Maori 2011 standard
+cancer_allCIsCM <- rbind(cancerRGK_CM, tidy_htest(cancerG1_CM), tidy_htest(cancerG2_CM, "Gamma_2"))
+mortality_allCIsCM <- rbind(mortalityRGK_CM, tidy_htest(mortalityG1_CM), tidy_htest(mortalityG2_CM, "Gamma_2"))
 ```
 
 ## Age distribution for the Cook Islands (2011 & 2016 Census)
@@ -149,8 +182,8 @@ mortality_allCIs <- rbind(mortalityRGK, tidy_htest(mortalityG1), tidy_htest(mort
 Age <- do.call(cbind.data.frame, lapply(Popn[,-1], age_p)) 
 Age <- rbind(Age[1:2, ], Age[3, ]+ Age[4, ])
 Age_p <- data.frame(Age=c("0-14", "15-44", "45+"), 
-                    Proportion=round(c(Age$Yr2011, Age$Yr2016, WHOweights3), 3),
-                       Census=c(rep(c("2011", "2016", "WHO"), each=3)))
+                    Proportion=round(c(Age$Yr2011, Age$Yr2016, maoriStd3, WHOweights3), 3),
+                       Census=c(rep(c("2011", "2016", "Maori 2011", "WHO"), each=3)))
 p1 <- ggplot(Age_p, aes(x=Age, y=Proportion, fill=Census)) +
   geom_col(position="dodge") +
   theme(legend.title=element_blank())
@@ -158,22 +191,44 @@ p1 <- ggplot(Age_p, aes(x=Age, y=Proportion, fill=Census)) +
 ggplotly(p1)
 ```
 
-## Mortality rate for the Cook Islands (2009-2015)
-### Age-adjusted, WHO standardised rate per 100 000 people
+## Age-adjusted mortality rate for the Cook Islands (2009-2015)
+### WHO standard (left) and 2011 Maori population standard (right)
 
-```{r, fig.width=12, fig.height=8}
+```{r, fig.width=16, fig.height=8}
 # Mortality plot
-p3 <- plot_allCIs(mortality_allCIs) + 
-  scale_y_continuous(limits=c(400, 1000))
-ggplotly(p3, tooltip=c("x", "y", "colour"))
+CIWHO_plot <- plot_allCIs(mortality_allCIs) +
+  scale_y_continuous(limits=c(200, 1000)) +
+  theme(legend.position="none")
+  
+CIMaori_plot <- plot_allCIs(mortality_allCIsCM) +
+  scale_y_continuous(limits=c(200, 1000)) 
+
+plotlyCIWHO <- ggplotly(CIWHO_plot, tooltip=c("x", "y", "colour")) %>% 
+  layout(showlegend=F)
+plotlyCIMaori <- ggplotly(CIMaori_plot, tooltip=c("x", "y", "colour")) 
+
+# Plot side by side
+subplot(plotlyCIWHO, plotlyCIMaori, shareY=TRUE, titleX=TRUE) 
+
 ```
 
-## Incidences of cancer for the Cook Islands (2009-2015)
-### Age-adjusted, WHO standardised rate per 100 000 people
+## Age-adjusted cancer rates for the Cook Islands (2009-2015)
+### WHO standard (left) and 2011 Maori population standard (right)
 
-```{r, fig.width=12, fig.height=8}
+```{r, fig.width=16, fig.height=8}
 # Cancer plot
-p2 <- plot_allCIs(cancer_allCIs) +
-  scale_y_continuous(limits=c(0, 250))
-ggplotly(p2, tooltip=c("x", "y", "colour"))
+CIWHO_plotC <- plot_allCIs(cancer_allCIs) +
+  scale_y_continuous(limits=c(0, 250)) +
+  theme(legend.position="none")
+  
+CIMaori_plotC <- plot_allCIs(cancer_allCIsCM) +
+  scale_y_continuous(limits=c(0, 250)) 
+
+plotlyCIWHOC <- ggplotly(CIWHO_plotC, tooltip=c("x", "y", "colour")) %>% 
+  layout(showlegend=F)
+plotlyCIMaoriC <- ggplotly(CIMaori_plotC, tooltip=c("x", "y", "colour")) 
+
+# Plot side by side
+subplot(plotlyCIWHOC, plotlyCIMaoriC, shareY=TRUE, titleX=TRUE) 
+
 ```
