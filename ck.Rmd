@@ -195,7 +195,7 @@ ggplotly(p1)
 ## Age-adjusted mortality rate for the Cook Islands (2009-2015)
 ### WHO standard (left) and 2011 Maori population standard (right)
 
-```{r, fig.width=16, fig.height=8}
+```{r, fig.width=14, fig.height=7}
 # Mortality plot
 CIWHO_plot <- plot_allCIs(mortality_allCIs) +
   scale_y_continuous(limits=c(200, 1000)) +
@@ -209,8 +209,7 @@ plotlyCIWHO <- ggplotly(CIWHO_plot, tooltip=c("x", "y", "colour")) %>%
 plotlyCIMaori <- ggplotly(CIMaori_plot, tooltip=c("x", "y", "colour")) 
 
 # Plot side by side
-subplot(plotlyCIWHO, plotlyCIMaori, shareY=TRUE, titleX=TRUE) 
-
+subplot(plotlyCIWHO, plotlyCIMaori, shareY=TRUE, titleX=TRUE)
 ```
 
 ## Age-adjusted cancer rates for the Cook Islands (2009-2015)
@@ -231,5 +230,4 @@ plotlyCIMaoriC <- ggplotly(CIMaori_plotC, tooltip=c("x", "y", "colour"))
 
 # Plot side by side
 subplot(plotlyCIWHOC, plotlyCIMaoriC, shareY=TRUE, titleX=TRUE) 
-
 ```
