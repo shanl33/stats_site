@@ -169,7 +169,55 @@ plotlyInt <- ggplotly(MaoriInt_plot, tooltip=c("x", "y", "colour"))
 
 # Plot side by side
 subplot(plotlyWHO, plotlyInt, shareY=TRUE, titleX=TRUE) 
-  #layout(title="WHO standard (left) and Maori 2011 standard (right)")
+```
+
+
+```{r, eval=FALSE, include=FALSE}
+# Function to make WHO proportions and incidence counts collapse into 3 age-bands
+count3bands <- function(x, a=1, b=4) {
+  c(sum(x[1:a]), sum(x[(a+1):b]), sum(x[-(1:b)], na.rm=T))
+}
+# Lung cancer counts in 3-age bands
+maoriLung3bands <- do.call(cbind.data.frame, lapply(maoriLung, count3bands, b=9))
+# Weights (W) for wspoissonTest() when using age-standardisation
+# a). Population size for each of the 3 age-bands (n.x)
+maori3 <- do.call(cbind.data.frame, lapply(maoriPopnCounts, count3bands, b=9))
+
+# b). Weights for WHO standard
+# Weights for WHO standard
+WHOweights3 <- count3bands(WHOdf$Propn, a=3, b=9)/WHO_sum
+
+# c). Weights for wspoissonTest()
+W3M <- WHOweights3*100/(maori3*WHO_sum)
+#### 95% Confidence intervals ####
+# Gamma 1 confidence intervals
+lungG1_3 <- do.call(rbind.data.frame, 
+                     mapply(estimateCI, counts=maoriLung3bands, W=W3M, SIMPLIFY=FALSE))
+
+# Gamma 2 confidence intervals 
+lungG2_3 <- do.call(rbind.data.frame, 
+                     mapply(estimateCI, counts=maoriLung3bands, W=W3M, SIMPLIFY=FALSE, type="tcz"))
+
+# Rothman/Greenland and Keyfitz
+lungRGK_3 <- RGandK(lungG1_3, maoriLung3bands) 
+
+# Collate data for plotting
+lung_allCIs3 <- rbind(lungRGK_3, tidy_htest(lungG1_3), tidy_htest(lungG2_3, "Gamma_2"))
+# Plot
+MaoriWHO_plot3 <- plot_allCIs(lung_allCIs3)  
+  
+# PlotsMaoriInt_plot +
+pWHO18 <- MaoriWHO_plot +
+  scale_y_continuous(limits=c(20, 100))
+pInt <- MaoriInt_plot +
+  scale_y_continuous(limits=c(20, 100)) 
+
+pWHO3 <- MaoriWHO_plot3 +
+  scale_y_continuous(limits=c(20, 100)) 
+
+# Plot side by side (saved a plot for presentation)
+subplot(pWHO18, pInt, pWHO3, shareY=T, titleX=T) %>%
+  layout(showlegend=F)
 ```
 
 ## Age-adjusted lung cancer rates for NZ Maori
